@@ -1,0 +1,22 @@
+{
+  "name": "exceed-vote-backend",
+  "version": "0.0.1",
+  "description": "website vote for exceed",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exceed-vote/vote-backend.git"
+  },
+  "keywords": [
+    "website"
+  ],
+  "author": "Kamontat Chantrachirathumrong, Chanon Jenakom",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/exceed-vote/vote-backend/issues"
+  },
+  "homepage": "https://github.com/exceed-vote/vote-backend#readme"
+}
