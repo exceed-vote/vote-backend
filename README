@@ -1,2 +1,2 @@
 install by `npm install`
-run by `node server`
+run by `node start`
