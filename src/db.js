@@ -1,4 +1,4 @@
-const config = require('./db_config');
+const config = require('../db_config');
 const Client = require('mariasql');
 
 var cli = new Client(config);
