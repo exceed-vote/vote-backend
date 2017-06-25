@@ -3,10 +3,12 @@ const Client = require('mariasql');
 
 var cli = new Client(config);
 
-cli.query('SHOW DATABASES', function(err, rows) {
-  if (err)
-    throw err;
-  console.dir(rows);
-});
+exports.show = function() {
+    cli.query('SHOW DATABASES', function(err, rows) {
+        if (err)
+            throw err;
+        return rows;
+    });
+    cli.end();
+}
 
-cli.end();
