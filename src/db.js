@@ -13,19 +13,20 @@ exports.show = function() {
     })
 }
 
-exports.user = function(id) {
+exports.group = function(code) {
     var cli = new Client(config)
     return new Promise((res, rej) => {
-        var where = ""
-        if (id)
-            where = `WHERE id=${id}`
-        cli.query('SELECT * FROM exceed_project.informations ' + where, function(err, rows) {
+        if (!code || code === "")
+            return rej("code cannot be null or empty")
+
+        cli.query('SELECT * FROM exceed_project.informations ' + `WHERE code=${code}`, function(err, rows) {
             if (err)
                 return rej(err)
             rows.forEach(function (val, i) {
                 rows[i].name = utf8.decode(rows[i].name)
                 rows[i].short_description = utf8.decode(rows[i].short_description)
             })
+            if (rows.length > 1) rej("code cannot be same!")
             return res(rows)
         })
     })
