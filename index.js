@@ -15,10 +15,8 @@ morgan(':method :url :status :res[content-length] - :response-time ms')
 app.use(resTime())
 app.use(compression())
 
-app.get('/user', (req, res) => {
-    db.user().then(function(resolve) {
-        var name = resolve[0].name
-        console.log(name);
+app.get('/group/:code', (req, res) => {
+    db.group(req.params.code).then(function(resolve) {
         res.status(200).json(resolve)
     }).catch(function (rej) {
         console.error(rej)
@@ -34,7 +32,11 @@ app.post('/insert', (req, res) => {
     db.insert(data).then(function(resolve) {
         res.status(201).end(JSON.stringify(resolve))
     }).catch(function (rej) {
-        res.status(500).end(JSON.stringify(rej))
+        var code = rej.code
+        if (code == 1062)
+            res.status(400).end("Duplicate entry '%s' for key %d")
+        else
+            res.status(500).end(JSON.stringify(rej))
     })
 })
 
