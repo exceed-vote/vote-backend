@@ -16,7 +16,7 @@ app.use(compression())
 
 app.get('/user', (req, res) => {
     db.user().then(function(resolve) {
-        // var name = resolve[0].name
+        var name = resolve[0].name
         res.status(200).json(resolve);
     }).catch(function (rej) {
         console.error(rej)
