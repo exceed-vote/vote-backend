@@ -39,7 +39,7 @@ exports.insert = function(json) {
     var cli = new Client(config)
     return new Promise((res, rej) => {
         var query = `INSERT INTO exceed_project.informations (code,name,short_description,picture) VALUE (${code}, "${name}", "${des}", "${pic}")`
-        console.log(query)
+        // console.log(query)
         cli.query(query, function(err, rows) {
             if (err)
                 return rej(err)

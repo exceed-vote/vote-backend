@@ -32,9 +32,9 @@ app.post('/insert', (req, res) => {
         picture: "asdf"
     }
     db.insert(data).then(function(resolve) {
-        res.status(201).sent(resolve)
+        res.status(201).end(JSON.stringify(resolve))
     }).catch(function (rej) {
-        res.status(500).sent(rej)
+        res.status(500).end(JSON.stringify(rej))
     })
 })
 
