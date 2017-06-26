@@ -5,3 +5,4 @@ db_config.json
 public
 **/*.swp
 .forever/*.log
+.forever/*.err
