@@ -17,25 +17,26 @@ app.use(compression())
 app.get('/user', (req, res) => {
     db.user().then(function(resolve) {
         var name = resolve[0].name
-        res.status(200).json(resolve);
+        console.log(name);
+        res.status(200).json(resolve)
     }).catch(function (rej) {
         console.error(rej)
     })
 })
 
-app.get('/insert', (req, res) => {
+app.post('/insert', (req, res) => {
     var data = {
         code: 2,
         name: "ทำไม",
         description: "ไม่มี",
         picture: "asdf"
-    };
+    }
     db.insert(data).then(function(resolve) {
-        console.log(resolve);
+        res.status(201).sent(resolve)
     }).catch(function (rej) {
-        console.error(rej);
-    });
-});
+        res.status(500).sent(rej)
+    })
+})
 
 app.listen(8080, () => {
     console.log('Server running on http://localhost:8080')
