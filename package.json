@@ -21,13 +21,19 @@
   },
   "homepage": "https://github.com/exceed-vote/vote-backend#readme",
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   },
   "dependencies": {
     "body-parser": "^1.17.2",
+    "compression": "^1.6.2",
     "express": "^4.15.3",
     "express-jwt": "5.3.0",
-    "mariasql": "^0.2.6"
+    "mariasql": "^0.2.6",
+    "morgan": "^1.8.2",
+    "response-time": "^2.3.2",
+    "utf8": "^2.1.2"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
