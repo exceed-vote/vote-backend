@@ -2,4 +2,8 @@
 
 cd "$(dirname "$0")"
 
-tail -f ./.forever/std.log
+if [[ $1 == "err" ]]; then
+    tail -f ./.forever/stderr.err
+else 
+    tail -f ./.forever/stdout.log
+fi
