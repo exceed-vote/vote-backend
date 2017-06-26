@@ -3,3 +3,4 @@ npm*.log
 db_config.json
 
 public
+**/*.swp
