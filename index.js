@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const resTime = require('response-time')
 const morgan = require('morgan')
 const compression = require('compression')
+const util = require('util')
 const app = express()
 const db = require('./src/db')
 
@@ -25,17 +26,21 @@ app.get('/user', (req, res) => {
 })
 
 app.post('/insert', (req, res) => {
-    var data = {
-        code: 2,
-        name: "ทำไม",
-        description: "ไม่มี",
-        picture: "asdf"
-    }
+    // code
+    // name
+    // description
+    // picture
+    var data = req.body
     db.insert(data).then(function(resolve) {
         res.status(201).end(JSON.stringify(resolve))
     }).catch(function (rej) {
         res.status(500).end(JSON.stringify(rej))
     })
+})
+
+// test post with body
+app.post('/test', (req, res) => {
+    res.status(200).json(req.body)
 })
 
 app.listen(8080, () => {
