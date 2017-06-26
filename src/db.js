@@ -32,13 +32,9 @@ exports.user = function(id) {
 }
 
 exports.insert = function(json) {
-    var code = json.code
-    var name = json.name
-    var des = json.description
-    var pic = json.picture
     var cli = new Client(config)
     return new Promise((res, rej) => {
-        var query = `INSERT INTO exceed_project.informations (code,name,short_description,picture) VALUE (${code}, "${name}", "${des}", "${pic}")`
+        var query = `INSERT INTO exceed_project.informations (code,name,short_description,picture) VALUE (${json.code}, "${json.name}", "${json.description}", "${json.picture}")`
         // console.log(query)
         cli.query(query, function(err, rows) {
             if (err)
@@ -47,3 +43,4 @@ exports.insert = function(json) {
         })
     })
 }
+
