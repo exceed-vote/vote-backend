@@ -1,6 +1,7 @@
 const config = require('../db_config')
 const Client = require('mariasql')
 const utf8 = require('utf8')
+const Buffer = require('buffer').Buffer
 
 exports.show = function() {
     var cli = new Client(config)
@@ -25,9 +26,10 @@ exports.group = function(code) {
             rows.forEach(function (val, i) {
                 rows[i].name = utf8.decode(rows[i].name)
                 rows[i].short_description = utf8.decode(rows[i].short_description)
+                // rows[i].picture = new Buffer(rows[i].picture).toString('base64')
             })
             if (rows.length > 1) rej("code cannot be same!")
-            return res(rows)
+            return res(rows[0])
         })
     })
 }
