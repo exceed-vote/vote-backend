@@ -6,7 +6,7 @@ const compression = require('compression')
 const util = require('util')
 const app = express()
 const db = require('./src/db')
-const Buffer = require('buffer').Buffer
+const auth = require('./src/auth')
 
 var utf8 = require('utf8')
 
@@ -19,6 +19,7 @@ app.use(compression())
 app.get('/group/:code', (req, res) => {
     db.group(req.params.code).then(function(result) {
         console.info("request group information ");
+        console.log(result.picture)
         res.status(200).json(result)
     }).catch(function (rej) {
         console.error(rej)
@@ -51,8 +52,28 @@ app.post('/insert', (req, res) => {
 })
 
 // test post with body
-app.post('/test', (req, res) => {
-    res.status(200).json(req.body)
+// app.post('/test', (req, res) => {
+//    res.status(200).json(req.body)
+// })
+
+app.post('/login', (req, res) => {
+    auth.login(req.body).then((result) => {
+        res.status(201).json({
+            token: result
+        })
+    }).catch((err) => {
+        res.status(500).json({
+            message: err
+        })
+    })  
+})
+
+app.get('/verify/:token', (req, res) => {
+    auth.verify(req.params.token).then((result) => {
+        res.status(200).json(result)
+    }).catch((err) => {
+        res.status(401).json(err)
+    })
 })
 
 app.listen(8080, () => {
