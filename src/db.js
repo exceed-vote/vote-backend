@@ -22,7 +22,7 @@ exports.group = (code) => {
                 result[i].name = utf8.decode(result[i].name)
                 result[i].short_description = utf8.decode(result[i].short_description)
             })
-            if (result.length < 1) rej("group " + code + " not found, or no group in database")
+            if (result.length < 1) return rej("group " + code + " not found, or no group in database")
             return res(result)
         })
     })
@@ -44,9 +44,7 @@ exports.vote = (student_id, name, group_pop, group_soft, group_hard) => {
             id: student_id,
             name: name
         }).then((result) => {
-            if (result.length !== 1) rej({
-                message: "user must have only 1 account!"
-            })
+            if (result.length !== 1) rej("user must have only 1 account!")
             result = result[0]
             if (!result.vote_popular && !result.vote_hard && !result.vote_soft) {
                 let query = `UPDATE exceed_project.users SET 
@@ -54,16 +52,17 @@ exports.vote = (student_id, name, group_pop, group_soft, group_hard) => {
                                  vote_hard=${group_hard},
                                  vote_soft=${group_soft}
                              WHERE student_id='${result.student_id}' AND name='${result.name}'`
-                console.log(query)
-                return run(query)
-            } else {
-                return rej({
-                    message: "you already voted."
+                // console.log(query)
+                run(query).then((re) => {
+                    return res(re)
+                }).catch((err) => {
+                    return rej(err)
                 })
+            } else {
+                return rej("you already voted.")
             }
         }).catch((err) => {
             return rej(err)
         })
     })
 }
-
