@@ -1,9 +1,6 @@
 const jwt = require('jsonwebtoken')
 const private_key = "secret_key"
 
-// config.name: string
-// config.teacher: boolean
-//   optional: config.id: string (if not teacher)
 // expire in 24 hour
 exports.login = (config) => {
     return new Promise((res, rej) => {

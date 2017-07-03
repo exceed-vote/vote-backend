@@ -18,8 +18,17 @@ app.use(compression())
 
 app.get('/group/:code', (req, res) => {
     db.group(req.params.code).then(function(result) {
-        console.info("request group information ");
-        console.log(result.picture)
+        console.info("request group information code=" + req.params.code);
+        res.status(200).json(result)
+    }).catch(function (rej) {
+        console.error(rej)
+        res.status(500).json(rej)
+    })
+})
+
+app.get('/group', (req, res) => {
+    db.group().then(function(result) {
+        console.info("request group information all");
         res.status(200).json(result)
     }).catch(function (rej) {
         console.error(rej)
@@ -57,15 +66,34 @@ app.post('/insert', (req, res) => {
 // })
 
 app.post('/login', (req, res) => {
-    auth.login(req.body).then((result) => {
-        res.status(201).json({
-            token: result
-        })
+    db.auth(req.body).then((result) => {
+        console.log(result)
+        let num = Number.parseInt(result.info.numRows)
+        console.log(`get ${num}`)
+        if (num !== 1) {
+            res.status(400).json({
+                message: "The student id or name is not exist!"
+            })
+        } else {
+            let information = result[0]
+            delete information.vote_soft
+            delete information.vote_hard
+            delete information.vote_popular
+            auth.login(information).then((result) => {
+                res.status(201).json({
+                    token: result
+                })
+            }).catch((err) => {
+                res.status(500).json({
+                    message: err
+                })
+            })  
+        }
     }).catch((err) => {
         res.status(500).json({
             message: err
         })
-    })  
+    })
 })
 
 app.get('/verify/:token', (req, res) => {
@@ -74,6 +102,31 @@ app.get('/verify/:token', (req, res) => {
     }).catch((err) => {
         res.status(401).json(err)
     })
+})
+
+app.post('/vote', (req, res) => {
+    if (!req.body.token) res.status(400).json({
+        message: "token not exist, Authorize"
+    })
+    else 
+        auth.verify(req.body.token).then((result) => {
+            db.vote(result.student_id, result.name, req.body.pop, req.body.soft, req.body.hard).then((result) => {
+                res.status(200).json(result)
+            }).catch((err) => {
+                if (err.code === 1452) {
+                    res.status(400).json({
+                        message: "group number not exist!"
+                    })
+                } else res.status(500).json({
+                    message: err
+                })
+            })
+        // error verify
+        }).catch((err) => {
+            res.status(401).json({
+                message: err
+            })
+        })
 })
 
 app.listen(8080, () => {
