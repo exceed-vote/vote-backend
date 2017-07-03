@@ -29,8 +29,22 @@ exports.group = (code) => {
 }
 
 exports.insert = (json) => {
-    let query = `INSERT INTO exceed_project.informations (code,name,short_description,picture) VALUE (${json.code}, "${json.name}", "${json.description}", "${json.picture}")`
-    return run(query)
+    let query1 = `INSERT INTO exceed_project.informations (code,name,short_description,picture) VALUE (${json.code}, "${json.name}", "${json.description}", "${json.picture}")`
+    return run(query1).then((result1) => {
+        let query2 = `INSERT INTO exceed_project.information_vote (information_id) VALUE (${result1.info.insertId})`
+        return run(query2).then((result2) => {
+            return new Promise((res, rej) => {
+                res({
+                    informations: {
+                        id: result1.info.insertId
+                    },
+                    information_vote: {
+                        id: result2.info.insertId
+                    }
+                })
+            })
+        })
+    })
 }
 
 exports.auth = (json) => {

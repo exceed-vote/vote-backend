@@ -111,6 +111,7 @@ app.get('/verify/:token', (req, res) => {
 
 app.post('/vote', (req, res) => {
     if (!req.body.token) res.status(400).json({
+        successful: false,
         message: "token not exist, Authorize"
     })
     else
@@ -127,13 +128,16 @@ app.post('/vote', (req, res) => {
         if (err.code) {
             if (err.code === 1452) {
                 res.status(400).json({
+                    successful: false,
                     message: "group number not exist!"
                 })
             } else res.status(500).json({
+                successful: false,
                 message: err
             })
         } else {
             res.status(401).json({
+                successful: false,
                 message: err
             })
         }
