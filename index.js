@@ -118,30 +118,30 @@ app.post('/vote', (req, res) => {
     // verify
         auth.verify(req.body.token).then((result) => {
         return db.vote(result.student_id, result.name, req.body.pop, req.body.soft, req.body.hard)
-            // vote
-    }).then((result) => {
-        res.status(200).json({
-            successful: true,
-            id: result.info.insertId
-        })
-    }).catch((err) => {
-        if (err.code) {
-            if (err.code === 1452) {
-                res.status(400).json({
+    // vote
+        }).then((result) => {
+            res.status(200).json({
+                successful: true,
+                id: result.info.insertId
+            })
+        }).catch((err) => {
+            if (err.code) {
+                if (err.code === 1452) {
+                    res.status(400).json({
+                        successful: false,
+                        message: "group number not exist!"
+                    })
+                } else res.status(500).json({
                     successful: false,
-                    message: "group number not exist!"
+                    message: err
                 })
-            } else res.status(500).json({
-                successful: false,
-                message: err
-            })
-        } else {
-            res.status(401).json({
-                successful: false,
-                message: err
-            })
-        }
-    })
+            } else {
+                res.status(401).json({
+                    successful: false,
+                    message: err
+                })
+            }
+        })
 })
 
 app.listen(8080, () => {
