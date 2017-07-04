@@ -58,8 +58,9 @@ exports.vote = (student_id, name, group_pop, group_soft, group_hard) => {
             id: student_id,
             name: name
         }).then((result) => {
-            if (result.length !== 1) rej("user must have only 1 account!")
+            if (result.length !== 1) rej("User must have only 1 account!")
             result = result[0]
+            if (group_pop === group_soft || group_pop === group_hard || group_hard === group_soft) rej("All vote group number must be different.")
             if (!result.vote_popular && !result.vote_hard && !result.vote_soft) {
                 let query = `UPDATE exceed_project.users SET 
                                  vote_popular=${group_pop},
