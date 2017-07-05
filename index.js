@@ -7,18 +7,27 @@ const util = require('util')
 const app = express()
 const db = require('./src/db')
 const auth = require('./src/auth')
-
-var utf8 = require('utf8')
-
+// circuclar json parse and stringify
+const CJSON = require('circular-json')
+// server config
 app.use(express.static('public'))
 app.use(bodyParser.json())
 morgan(':method :url :status :res[content-length] - :response-time ms')
 app.use(resTime())
 app.use(compression())
 
+app.get('/', (req, res) => {
+    const save = require('./src/log-util').logger('history', "0000000000", req.ip)
+    save.info(CJSON.stringify(req.headers, null, 3))
+    res.status(200).send({
+        successful: false,
+        message: "root url is not accessable."
+    })
+})
+
 app.get('/group/:code', (req, res) => {
     db.group(req.params.code).then(function(result) {
-        console.info("request group information code=" + req.params.code);
+        console.info("request group information code=" + req.params.code)
         res.status(200).json(result)
     }).catch(function(rej) {
         console.error(rej)
@@ -28,7 +37,7 @@ app.get('/group/:code', (req, res) => {
 
 app.get('/group', (req, res) => {
     db.group().then(function(result) {
-        console.info("request group information all");
+        console.info("request group information all")
         res.status(200).json(result)
     }).catch(function(rej) {
         console.error(rej)
@@ -145,5 +154,6 @@ app.post('/vote', (req, res) => {
 })
 
 app.listen(8080, () => {
-    console.log('Server running on http://localhost:8080')
+    const log = require('./src/log-util').logger('common')
+    log.info('Server running on http://localhost:8080')
 })
