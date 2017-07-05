@@ -34,7 +34,8 @@
     "mariasql": "^0.2.6",
     "morgan": "^1.8.2",
     "response-time": "^2.3.2",
-    "utf8": "^2.1.2"
+    "utf8": "^2.1.2",
+    "log4js": "^1.1.1"
   },
   "devDependencies": {
     "chalk": "^2.0.1",
@@ -43,7 +44,6 @@
     "gulp-babel": "^6.1.2",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^3.0.0",
-    "log4js": "^1.1.1",
     "pump": "^1.0.2"
   }
 }
