@@ -9,6 +9,7 @@ const db = require('./src/db')
 const auth = require('./src/auth')
 // circuclar json parse and stringify
 const CJSON = require('circular-json')
+const logutil = require('./src/log-util')
 // server config
 app.use(express.static('public'))
 app.use(bodyParser.json())
@@ -17,8 +18,7 @@ app.use(resTime())
 app.use(compression())
 
 app.get('/', (req, res) => {
-    const save = require('./src/log-util').logger('history', "0000000000", req.ip)
-    save.info(CJSON.stringify(req.headers, null, 3))
+    logutil.logger('history', "0000000000", req.ip).info("go to root!")
     res.status(200).send({
         successful: false,
         message: "root url is not accessable."
@@ -27,20 +27,20 @@ app.get('/', (req, res) => {
 
 app.get('/group/:code', (req, res) => {
     db.group(req.params.code).then(function(result) {
-        console.info("request group information code=" + req.params.code)
+        logutil.logger('history', "0000000000", req.ip).info("get group code=", req.params.code)
         res.status(200).json(result)
     }).catch(function(rej) {
-        console.error(rej)
+        logutil.logger('error', "0000000000", req.ip).error(rej)
         res.status(500).json(rej)
     })
 })
 
 app.get('/group', (req, res) => {
     db.group().then(function(result) {
-        console.info("request group information all")
+        logutil.logger('history', "0000000000", req.ip).info("get all group")
         res.status(200).json(result)
     }).catch(function(rej) {
-        console.error(rej)
+        logutil.logger('error', "0000000000", req.ip).error(rej)
         res.status(500).json(rej)
     })
 })
@@ -55,8 +55,10 @@ app.post('/insert', (req, res) => {
         message: "body not exist"
     })
 
+    logutil.logger('history', "0000000000", req.ip).info("insert ", JSON.stringify(data))
+
     db.insert(data).then(function(resolve) {
-        console.info("complete insertion")
+        logutil.logger('common', "0000000000", req.ip).info("insert complete!")
         res.status(201).json(resolve)
     }).catch(function(rej) {
         var code = rej.code
@@ -86,6 +88,8 @@ app.post('/login', (req, res) => {
             delete information.vote_soft
             delete information.vote_hard
             delete information.vote_popular
+
+            logutil.logger('history', information.student_id, req.ip).info("starting login!")
             auth.login(information).then((result) => {
                 res.status(201).json({
                     token: result
@@ -123,12 +127,16 @@ app.post('/vote', (req, res) => {
         successful: false,
         message: "token not exist, Authorize"
     })
-    else
-    // verify
+    else {
+        let student_id = ""
+        // verify
         auth.verify(req.body.token).then((result) => {
-        return db.vote(result.student_id, result.name, req.body.pop, req.body.soft, req.body.hard)
-    // vote
+            student_id = result.student_id
+            logutil.logger('history', student_id, req.ip).info("verify!")
+            return db.vote(student_id, result.name, req.body.pop, req.body.soft, req.body.hard)
+        // vote
         }).then((result) => {
+            logutil.logger('history', student_id, req.ip).info("vote!")
             res.status(200).json({
                 successful: true,
                 id: result.info.insertId
@@ -151,9 +159,10 @@ app.post('/vote', (req, res) => {
                 })
             }
         })
+    }
 })
 
 app.listen(8080, () => {
-    const log = require('./src/log-util').logger('common')
+    const log = logutil.logger('common')
     log.info('Server running on http://localhost:8080')
 })
