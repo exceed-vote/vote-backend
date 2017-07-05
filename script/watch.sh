@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 cd ..
 
 if [[ $1 == "err" ]]; then
-    tail -f ./.forever/stderr.err
+    tail -f $PWD/logs/*.err
 else 
-    tail -f ./.forever/stdout.log
+    tail -f $PWD/logs/*.log
 fi
