@@ -1,18 +1,23 @@
 {
     "appenders": [
         {
-        "type": "dateFile",
-        "filename": "../logs/error.err",
-        "pattern": "-dd--hh.err",
-        "alwaysincludepattern": true,
-        "category": "error"          
+            "type": "file",
+            "filename": "logs/common.log",
+            "category": "common",
+            "maxLogSize": 2097152
         },
         {
-        "type": "dateFile",
-        "filename": "../logs/request.log",
-        "pattern": "-dd--hh.log",
-        "alwaysincludepattern": true,
-        "category": "request"
+            "type": "dateFile",
+            "filename": "logs/history.log",
+            "pattern": "-dd--hh.log",
+            "alwaysincludepattern": true,
+            "category": "history"
+        },
+        {
+            "type": "file",
+            "filename": "logs/error.err",
+            "category": "error",
+            "maxLogSize": 2097152
         }
     ]
 }
