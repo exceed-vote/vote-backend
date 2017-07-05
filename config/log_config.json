@@ -1,0 +1,18 @@
+{
+    "appenders": [
+        {
+        "type": "dateFile",
+        "filename": "../logs/error.err",
+        "pattern": "-dd--hh.err",
+        "alwaysincludepattern": true,
+        "category": "error"          
+        },
+        {
+        "type": "dateFile",
+        "filename": "../logs/request.log",
+        "pattern": "-dd--hh.log",
+        "alwaysincludepattern": true,
+        "category": "request"
+        }
+    ]
+}
