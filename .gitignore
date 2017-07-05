@@ -6,3 +6,5 @@ public
 **/*.swp
 .forever/*.log
 .forever/*.err
+logs/**/*.log
+logs/**/*.err
