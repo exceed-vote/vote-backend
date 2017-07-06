@@ -31,7 +31,9 @@ app.get('/group/:code', (req, res) => {
         res.status(200).json(result)
     }).catch(function(rej) {
         logutil.logger('error', "0000000000", req.ip).error(rej)
-        res.status(500).json(rej)
+        res.status(400).json({
+            message: rej
+        })
     })
 })
 
@@ -50,9 +52,13 @@ app.post('/insert', (req, res) => {
     // name
     // description
     // picture
+    // token
     var data = req.body
-    if (!data || !data.code || data === "") res.status(401).json({
+    if (!data || !data.code || data === "") res.status(400).json({
         message: "body not exist"
+    })
+    else if (!data.token || data.token !== "eyJpZCI6IjEiLCJzdHVkZW50X2lkIjoiMDAwMDAwMDAwMCIsIm5hbWUiOiJhZG1pbiIsInN1cm5hbWUiOiJhZG1pbiIsImlhdCI6MTQ5OTI0NjkwMywiZXhwIjoxNDk5MzMzMzAzfQ") res.status(401).json({
+        message: "auth uncorrect!"
     })
 
     logutil.logger('history', "0000000000", req.ip).info("insert ", JSON.stringify(data))
