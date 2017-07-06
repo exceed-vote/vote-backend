@@ -11,6 +11,8 @@ The server will run on `localhost:8080`
 Assume that LINK is `localhost` and all return value and input value must be `json`
 And assume that header maybe have `Content-Type` = `application/json`
 
+admin token = `eyJpZCI6IjEiLCJzdHVkZW50X2lkIjoiMDAwMDAwMDAwMCIsIm5hbWUiOiJhZG1pbiIsInN1cm5hbWUiOiJhZG1pbiIsImlhdCI6MTQ5OTI0NjkwMywiZXhwIjoxNDk5MzMzMzAzfQ`
+
 1. get group information **(GET)**
     1. link: localhost/group/`GROUP_NUMBER`
         - GROUP_NUMBER = 1, 2, 3,... or doesn't have for all group
