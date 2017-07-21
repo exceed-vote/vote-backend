@@ -48,7 +48,13 @@ app.get('/', (req, res) => {
 app.get('/group/:code', (req, res) => {
     db.group(req.params.code).then(function(result) {
         logutil.logger('history', "0000000000", req.ip).info("get group code=", req.params.code)
-        res.status(200).json(result)
+        if (result.length > 1) {
+            res.status(400).json({
+                message: "too many group been requested"
+            })
+        } else {
+            res.status(200).json(result[0])
+        }
     }).catch(function(rej) {
         logutil.logger('error', "0000000000", req.ip).error(rej)
         res.status(400).json({
