@@ -186,7 +186,12 @@ app.post('/vote', (req, res) => {
                     message: err
                 })
             } else {
-                res.status(401).json({
+                var result = null
+                if (err === "you already voted.")
+                    result = res.status(400)
+                else
+                    result = res.status(401)
+                result.json({
                     successful: false,
                     message: err
                 })
