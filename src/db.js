@@ -66,8 +66,17 @@ exports.vote = (student_id, name, group_pop, group_soft, group_hard) => {
                                  vote_popular=${group_pop},
                                  vote_hard=${group_hard},
                                  vote_soft=${group_soft}
-                             WHERE student_id='${result.student_id}' AND name='${result.name}'`
-                // console.log(query)
+                             WHERE student_id='${result.student_id}' AND name='${result.name}';
+                             UPDATE exceed_project.information_vote SET
+                                 popular_score = popular_score + 1
+                             WHERE information_code=${group_pop};
+                             UPDATE exceed_project.information_vote SET
+                                 soft_score = soft_score + 1
+                             WHERE information_code=${group_soft};
+                             UPDATE exceed_project.information_vote SET
+                                 hard_score = hard_score + 1
+                             WHERE information_code=${group_hard};
+                             `
                 run(query).then((re) => {
                     return res(re)
                 }).catch((err) => {
