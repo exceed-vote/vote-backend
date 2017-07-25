@@ -6,7 +6,7 @@ exports.login = (config) => {
     return new Promise((res, rej) => {
         jwt.sign(config, private_key, { 
             algorithm: 'HS512',
-            expiresIn: '1d'
+            expiresIn: '1h'
         }, function(err, token) {
             if (err) return rej(err)
             return res(token)
